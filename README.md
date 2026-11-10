@@ -3,6 +3,8 @@
 Home cloud server pribadi dengan UI **pixel pastel** (minimalis, tanpa gradient norak),
 backend Node.js **tanpa dependency eksternal**, dan tema yang bisa diganti.
 
+**Live sekarang:** `https://cloud-server-production-ea2a.up.railway.app`
+
 ![Home](docs/screenshots/home-hero-sky.png)
 
 ## Fitur
@@ -53,6 +55,16 @@ Tanpa dependency — cukup Node.js ≥ 18.
 ├── docs/              # STATUS.md + screenshot + mockup referensi
 ├── checkpoints/       # snapshot untuk rollback cepat
 └── JOURNAL.md         # riwayat perubahan & keputusan desain
+```
+
+## Deploy
+
+App di-deploy ke **Railway** (free plan, tanpa Docker, tanpa kartu kredit):
+
+```bash
+# Railway CLI: deploy dari direktori runtime
+railway up -y --detach --new --name cloud-server
+railway domain -p 8080   # → https://<service>.up.railway.app
 ```
 
 ## Screenshot

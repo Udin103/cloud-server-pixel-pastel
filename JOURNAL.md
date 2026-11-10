@@ -81,6 +81,19 @@ node scripts/set-password.js <username> <password-baru>
   - Screenshot: `docs/screenshots/categorized-slice-doc.png`, `categorized-slice-zip.png`, `categorized-sort-name.png`
   - File yang diubah: `index.html`, `css/styles.css`, `js/main.js`
 
+### 2026-11-10 — Deploy ke Railway (gratis, tanpa Docker, tanpa kartu)
+
+**Status:** ✅ Terverifikasi live
+
+- 🚀 **App live di:** `https://cloud-server-production-ea2a.up.railway.app` (Railway, free plan — trial $5 / free $1 per bulan)
+- 🚫 Tidak pakai Docker, tidak perlu kartu kredit.
+- 🔧 Build via Nixpacks: install `npm install`, start `npm start`; Railway assign `PORT` (8080) — `server.js` sudah membaca `process.env.PORT`.
+- 🐛 Perbaikan saat deploy: domain pertama dibuat dengan target port **8000** → 502 (app benar-benar listen di **8080**). Setelah hapus & buat ulang domain pakai port **8080** → **HTTP 200**.
+- ✅ Verifikasi live: `GET /` → **200** (HTML SPA valid), `GET /api/status` → `{"accounts":3,...}`, asset CSS/JS → **200**.
+- 📦 Deploy via Railway CLI: `railway login --browserless` → `railway init --name cloud-server` → staging runtime-only → `railway up -y --detach --new --name cloud-server` → `railway domain -p 8080`.
+- 🔗 Opsi auto-deploy: connect repo `Udin103/cloud-server-pixel-pastel` via Railway GitHub App (dashboard) — push ke `main` → auto-deploy.
+- ⚠️ Catatan: free plan Railway (service sleep saat idle, storage ephemeral) — wajar untuk prototype. Akun/seed (`admin`/`andra`/`keluarga`) & file upload reset per redeploy.
+
 ### 2026-11-10 — Revisi #11: Warna Psikologis, Grid Kotak Dihapus, Transisi Mode Imersif
 **Status:** ✅ Selesai
 

@@ -1,16 +1,16 @@
 # STATUS PROYEK — Cloud Server Pixel Pastel
 
 > Dokumen ringkas untuk handoff hemat token. Detail historis lengkap ada di [`JOURNAL.md`](../JOURNAL.md).
-> Terakhir diperbarui: **2026-11-10** · Revisi terakhir: **#8**
+> Terakhir diperbarui: **2026-11-10** · Revisi terakhir: **#12**
 
 ## Snapshot
 
 | Item | Nilai |
 | --- | --- |
-| Server | `http://localhost:8000` (background, `node server.js`) |
+| Server | **Live:** `https://cloud-server-production-ea2a.up.railway.app` (Railway, free plan) · lokal: `http://localhost:8000` |
 | Akun | 3 / 4 — `admin`, `andra`, `keluarga` (password `pixel123`), 1 slot registrasi bebas |
 | Kuota | 50 GB logis per akun |
-| Revisi | #12 selesai (24/24), #11 (69/69), #10 (13/13), #8 (59/59 + 28/28), Rev7 tetap 107/107 |
+| Revisi | **#12** selesai (24/24), **#11** (69/69), **#10** (13/13), **#8** (59/59 + 28/28), Rev7 tetap 107/107 |
 | File uji | Sudah dibersihkan, tidak ada `rev7-*` |
 
 ## ✅ Sudah selesai (Revisi #12)
