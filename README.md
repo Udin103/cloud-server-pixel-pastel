@@ -1,26 +1,26 @@
-# ☁️ Cloud Server — Pixel Pastel
+# Cloud Server — Pixel Pastel
 
 Home cloud server pribadi dengan UI **pixel pastel** (minimalis, tanpa gradient norak),
 backend Node.js **tanpa dependency eksternal**, dan tema yang bisa diganti.
 
-![Home](docs/screenshots/home-header-sky.png)
+![Home](docs/screenshots/home-hero-sky.png)
 
-## ✨ Fitur
+## Fitur
 
-- **Landing** dengan logo matahari–awan, grid pixel, dan tombol bergaya game
-- **3 tema** dengan karakter psikologis berbeda:
-  - **Sky Pastel** — biru 214° (tenang & tepercaya)
-  - **Sakura Dusk** — rose 344° (hangat & merawat), kelopak sakura berguguran
-  - **Autumn Studio** — amber 32° (nyaman & panen), daun gugur melayang
-- **Mode gelap** dengan transisi *sapu lingkaran* yang imersif (wipe dari titik tombol)
-- **Bintang jatuh** sesekali di mode gelap
-- **Auth** (`/api/login`, `/api/register`) dengan cookie HttpOnly + isolasi per akun
-- **Upload** biner sungguhan, **unduh** per file, dan **ZIP** yang mempertahankan struktur folder
-- **Mode seleksi lanjutan**: Shift+klik rentang, pilih semua, unduh massal, hapus massal
-- **Categorized** dengan donut storage, **irisan per kategori**, dan sorting nama/ukuran
-- **Dashboard & Categorized fullscreen** (tidak ada scroll halaman; panel scroll internal)
+- Landing dengan logo matahari–awan, dot pattern, dan spotlight kursor
+- 3 tema dengan karakter psikologis berbeda:
+  - **Sky Pastel** — biru 214° (tenang dan terpercaya)
+  - **Sakura Dusk** — rose 344° (hangat dan merawat), kelopak sakura bergugur
+  - **Autumn Studio** — amber 32° (nyaman dan panen), daun gugur melayang
+- Mode gelap dengan transisi *sapu lingkaran* yang imersif (wipe dari titik tombol)
+- Bintang jatuh sesekali di mode gelap
+- Auth (`/api/login`, `/api/register`) dengan cookie HttpOnly + isolasi per akun
+- Upload biner sungguhan, unduh per file, dan ZIP yang mempertahankan struktur folder
+- Mode seleksi lanjutan: Shift+klik rentang, pilih semua, unduh massal, hapus massal
+- Categorized dengan donut storage, irisan per kategori, dan sorting nama/ukuran
+- Dashboard dan Categorized fullscreen (tanpa scroll halaman; panel scroll internal)
 
-## 🚀 Menjalankan
+## Menjalankan
 
 ```bash
 git clone <repo>
@@ -39,10 +39,10 @@ Tanpa dependency — cukup Node.js ≥ 18.
 | `andra` | `pixel123` |
 | `keluarga` | `pixel123` |
 
-> ⚠️ **Ganti password sebelum deploy** — `node scripts/set-password.js <username> <password-baru>` lalu restart server.
+> Ganti password sebelum deploy — jalankan `node scripts/set-password.js <username> <password-baru>` lalu restart server.
 > Maksimum 4 akun.
 
-## 📁 Struktur
+## Struktur
 
 ```
 ├── server.js          # backend: static + API + session + ZIP
@@ -55,21 +55,25 @@ Tanpa dependency — cukup Node.js ≥ 18.
 └── JOURNAL.md         # riwayat perubahan & keputusan desain
 ```
 
-## 📸 Screenshot
+## Screenshot
 
-Lihat [`docs/screenshots/`](docs/screenshots/) — landing tiap tema, dashboard, categorized,
-transisi mode, dan mobile.
+Lihat folder `docs/screenshots/`:
 
-## 🧪 Tes
+- Landing: `home-hero-sky.png`, `home-shooting-star.png`, `icon-sun-cloud.png`
+- Tema: `psych-sky.png`, `psych-sakura.png`, `psych-autumn.png`, `autumn-leaves.png`, `sakura-petals.png`
+- Mode: `mode-wipe-mid.png`, `mode-dark-after-wipe.png`
+- Categorized: `categorized-slice-doc.png`, `categorized-slice-zip.png`, `categorized-split.png`
+
+## Tes
 
 Suite Playwright ada di luar repo (`/tmp/opencode/uitest`):
 
 ```bash
-node test-rev12.js   # panel kategori, sorting, split chart
-node test-rev11.js   # warna psikologis, transisi mode
+node test-rev12.js    # panel kategori, sorting, split chart
+node test-rev11.js    # warna psikologis, transisi mode
 node test-theme-stars.js
 ```
 
-## 📜 Lisensi & catatan
+## Lisensi & catatan
 
 Proyek pribadi untuk portofolio. Semua ikon digambar sendiri sebagai pixel art.
