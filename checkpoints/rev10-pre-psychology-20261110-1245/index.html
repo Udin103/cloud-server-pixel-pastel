@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="sky" data-mode="light" data-cursor="on" data-motion="on">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Server — Pixel Pastel</title>
+  <meta name="description" content="Home cloud server untuk menyimpan, mengirim, dan menerima file.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    /* Terapkan preferensi tersimpan sebelum CSS dirender (anti-flash) */
+    (function () {
+      try {
+        var root = document.documentElement;
+        var theme = localStorage.getItem('cloud.theme');
+        var legacy = { mint: 'autumn', matcha: 'autumn', peach: 'sky', lavender: 'sky' };
+        if (theme && legacy[theme]) theme = legacy[theme];
+        if (theme) root.setAttribute('data-theme', theme);
+        var mode = localStorage.getItem('cloud.mode');
+        if (mode === 'dark' || mode === 'light') root.setAttribute('data-mode', mode);
+        if (localStorage.getItem('cloud.cursor') === 'off') root.setAttribute('data-cursor', 'off');
+        if (localStorage.getItem('cloud.motion') === 'off') root.setAttribute('data-motion', 'off');
+      } catch (e) { /* localStorage tidak tersedia */ }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Pixel icon sprite -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-cloud" viewBox="0 0 16 16"><rect x="2" y="4" width="3" height="3"/><rect x="5" y="2" width="5" height="5"/><rect x="10" y="3" width="4" height="4"/><rect x="2" y="7" width="12" height="5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 16 16"><path d="M1 3h5v2h9v10H1z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 16 16"><path d="M3 1h7v2h2v2h2v10H3z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 16 16"><path d="M5 2h4v2h2v4h-2v2H5v-2H3V4h2z"/><path d="M9 9h2v2h2v2h-2v-2H9z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M7 2h2v5h5v2H9v5H7V9H2V7h5z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 16 16"><path d="M3 4h10v2H3z"/><path d="M5 6h6v9H5z"/><path d="M6 2h4v2H6z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 16 16"><rect x="2" y="10" width="2" height="4"/><rect x="6" y="6" width="2" height="8"/><rect x="10" y="2" width="2" height="12"/></symbol>
+    <symbol id="i-home" viewBox="0 0 16 16"><path d="M8 2l6 5h-2v7H4V7H2z"/></symbol>
+    <symbol id="i-root" viewBox="0 0 16 16"><path d="M8 2l6 3-6 3-6-3z"/><path d="M2 8l6 3 6-3v2l-6 3-6-3z"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 16 16"><path d="M6 2h2v2h2v2h2v4h-2v2H8v2H6z"/></symbol>
+    <symbol id="i-crown" viewBox="0 0 16 16"><path d="M2 4h2v2h2V4h4v2h2V4h2v9H2z"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6 1h4v3h3v3h3v4h-3v3h-3v2H6v-2H3v-3H1V7h3V4h3zM6 6h4v4H6z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M2 8h2v2h2v2h2v-2h2v-2h2V6h2v2h-2v2h-2v2H8v2H6v-2H4v-2H2z"/></symbol>
+    <symbol id="i-close" viewBox="0 0 16 16"><path d="M3 3h2v2h2v2h2v2h-2v2H5v2H3v-2h2v-2h2V8H5V6H3z"/><path d="M11 3h2v2h-2v2h-2v2h2v2h2v2h-2v-2h-2V9H9V7h2V5h2z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 16 16"><path d="M6 2h4v2h2v4h-2v2H6V8H4V4h2z"/><path d="M3 11h10v3H3z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 16 16"><path d="M5 7h6v7H5z"/><path d="M6 2h4v2h2v4H4V4h2z"/></symbol>
+    <symbol id="i-file-plus" viewBox="0 0 16 16"><path d="M2 1h7v2h2v2h2v10H2z"/><path d="M7 6h2v2h2v2H9v2H7v-2H5V8h2z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 16 16"><path d="M6 5h4v1h1v4h-1v1H6v-1H5V6h1z"/><path d="M7 1h2v3H7zM7 12h2v3H7zM1 7h3v2H1zM12 7h3v2h-3z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M5 2h6v1h2v2h1v6h-1v2h-2v1H5v-1H3v-2H2V5h1V3h2zM7 5h2v2H7zM10 8h2v2h-2zM6 10h1v1H6z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 16 16"><path d="M7 0h2v5h5v2H9v5H7V9H2V7h5z"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 16 16"><path d="M7 10h2V4h3L8 0 4 4h3z"/><path d="M2 12h12v3H2z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 16 16"><path d="M7 2h2v6h3l-4 4-4-4h3z"/><path d="M2 12h12v3H2z"/></symbol>
+    <symbol id="i-select" viewBox="0 0 16 16"><path d="M2 2h4v2H4v2H2zM10 2h4v4h-2V4h-2zM2 10h2v2h2v2H2zM12 10h2v4h-4v-2h2z"/><path d="M5 7h2v2h2V7h2v2h-2v2H7V9H5z"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 16 16"><path d="M2 2h12v3H2z"/><path d="M3 5h10v9H3z"/><path d="M7 6h2v2H7zM7 9h2v2H7z"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M3 7h10v2H3z"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <a class="logo" href="#/">
+      <svg class="icon icon--logo" aria-hidden="true"><use href="#i-cloud"/></svg>
+      <span>CLOUD</span>
+    </a>
+    <nav class="topnav" id="topnav">
+      <a href="#/" data-view="landing">Home</a>
+      <a href="#/dashboard" data-view="dashboard">Dashboard</a>
+      <a href="#/categorized" data-view="categorized">Categorized</a>
+    </nav>
+    <div class="topbar__tools">
+      <span class="status" id="serverStatus"><span class="status__dot"></span>Online</span>
+      <div class="auth" id="authArea"></div>
+      <div class="topbar__actions">
+        <button class="modeclock" id="modeClock" type="button" aria-label="Aktifkan mode gelap" aria-pressed="false" title="Ganti mode terang/gelap">
+          <span class="modeclock__face" aria-hidden="true">
+            <span class="modeclock__hand modeclock__hand--hour" id="clockHour"></span>
+            <span class="modeclock__hand modeclock__hand--minute" id="clockMinute"></span>
+            <span class="modeclock__hand modeclock__hand--second" id="clockSecond"></span>
+            <span class="modeclock__pin"></span>
+          </span>
+        </button>
+        <button class="iconbtn" id="settingsBtn" type="button" aria-label="Pengaturan" title="Pengaturan">
+          <svg class="icon" aria-hidden="true"><use href="#i-gear"/></svg>
+        </button>
+      </div>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <!-- ================= LANDING ================= -->
+    <section class="view" id="view-landing">
+      <div class="landing">
+        <div class="landing__grid" aria-hidden="true"></div>
+        <div class="landing__sky">
+          <button class="sky-btn sky-btn--sun" id="sunBtn" type="button" aria-label="Aktifkan mode gelap" title="Siang — klik matahari untuk malam">
+            <svg class="sky-icon sky-icon--sun" viewBox="0 0 16 16" aria-hidden="true">
+              <g class="sun-part">
+                <rect x="9" y="2" width="3" height="1"/>
+                <rect x="8" y="3" width="5" height="3"/>
+                <rect x="9" y="6" width="3" height="1"/>
+                <rect x="10" y="0" width="1" height="2"/>
+                <rect x="13" y="3" width="1" height="2"/>
+                <rect x="6" y="3" width="1" height="2"/>
+              </g>
+              <g class="cloud-shade" transform="translate(1 1)">
+                <rect x="2" y="8" width="4" height="4"/>
+                <rect x="6" y="6" width="5" height="5"/>
+                <rect x="10" y="8" width="4" height="4"/>
+                <rect x="1" y="10" width="13" height="5"/>
+              </g>
+              <g class="cloud-part">
+                <rect x="2" y="8" width="4" height="4"/>
+                <rect x="6" y="6" width="5" height="5"/>
+                <rect x="10" y="8" width="4" height="4"/>
+                <rect x="1" y="10" width="13" height="5"/>
+              </g>
+            </svg>
+          </button>
+          <button class="sky-btn sky-btn--moon" id="moonBtn" type="button" aria-label="Aktifkan mode terang" title="Malam — klik bulan untuk siang">
+            <svg class="sky-icon sky-icon--moon" aria-hidden="true"><use href="#i-moon"/></svg>
+          </button>
+
+          <span class="sky-particle" aria-hidden="true" data-p="1"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="2"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="3"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="4"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="5"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="6"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="7"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="8"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="9"></span>
+          <span class="sky-particle" aria-hidden="true" data-p="10"></span>
+
+          <span class="sky-petal" aria-hidden="true" data-f="1"></span>
+          <span class="sky-petal" aria-hidden="true" data-f="2"></span>
+          <span class="sky-petal" aria-hidden="true" data-f="3"></span>
+          <span class="sky-petal" aria-hidden="true" data-f="4"></span>
+          <span class="sky-petal" aria-hidden="true" data-f="5"></span>
+          <span class="sky-petal" aria-hidden="true" data-f="6"></span>
+          <span class="sky-petal" aria-hidden="true" data-f="7"></span>
+          <span class="sky-petal" aria-hidden="true" data-f="8"></span>
+
+          <span class="sky-leaf" aria-hidden="true" data-f="1"></span>
+          <span class="sky-leaf" aria-hidden="true" data-f="2"></span>
+          <span class="sky-leaf" aria-hidden="true" data-f="3"></span>
+          <span class="sky-leaf" aria-hidden="true" data-f="4"></span>
+          <span class="sky-leaf" aria-hidden="true" data-f="5"></span>
+          <span class="sky-leaf" aria-hidden="true" data-f="6"></span>
+
+          <svg class="sky-star" aria-hidden="true" data-s="1"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="2"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="3"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="4"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="5"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="6"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="7"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="8"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="9"><use href="#i-star"/></svg>
+          <svg class="sky-star" aria-hidden="true" data-s="10"><use href="#i-star"/></svg>
+
+          <span class="sky-shoot" aria-hidden="true" data-k="1"></span>
+          <span class="sky-shoot" aria-hidden="true" data-k="2"></span>
+          <span class="sky-shoot" aria-hidden="true" data-k="3"></span>
+        </div>
+        <div class="landing__inner">
+          <svg class="landing__logo" viewBox="0 0 16 16" aria-hidden="true">
+            <g class="sun-part">
+              <rect x="9" y="2" width="3" height="1"/>
+              <rect x="8" y="3" width="5" height="3"/>
+              <rect x="9" y="6" width="3" height="1"/>
+              <rect x="10" y="0" width="1" height="2"/>
+              <rect x="13" y="3" width="1" height="2"/>
+              <rect x="6" y="3" width="1" height="2"/>
+            </g>
+            <g class="cloud-shade" transform="translate(1 1)">
+              <rect x="2" y="8" width="4" height="4"/>
+              <rect x="6" y="6" width="5" height="5"/>
+              <rect x="10" y="8" width="4" height="4"/>
+              <rect x="1" y="10" width="13" height="5"/>
+            </g>
+            <g class="cloud-part">
+              <rect x="2" y="8" width="4" height="4"/>
+              <rect x="6" y="6" width="5" height="5"/>
+              <rect x="10" y="8" width="4" height="4"/>
+              <rect x="1" y="10" width="13" height="5"/>
+            </g>
+          </svg>
+          <h1 class="landing__title" id="landingTitle">CLOUD<br>SERVER</h1>
+          <div class="landing__cta">
+            <a href="#/dashboard" class="btn btn--peach landing-action" data-view="dashboard">
+              <svg class="icon landing-action__icon" aria-hidden="true"><use href="#i-folder"/></svg>
+              <span class="landing-action__text">
+                <strong>Dashboard</strong>
+                <small>Kelola file &amp; folder</small>
+              </span>
+            </a>
+            <a href="#/categorized" class="btn btn--lavender landing-action" data-view="categorized">
+              <svg class="icon landing-action__icon" aria-hidden="true"><use href="#i-chart"/></svg>
+              <span class="landing-action__text">
+                <strong>Categorized</strong>
+                <small>Lihat statistik storage</small>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DASHBOARD ================= -->
+    <section class="view" id="view-dashboard" hidden>
+      <div class="app">
+        <div class="toolbar">
+          <div class="toolbar__group">
+            <button class="btn btn--sm btn--mint" id="newFolderBtn" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span>Folder Baru</span>
+            </button>
+            <button class="btn btn--sm btn--lavender" id="addFileBtn" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><span>Upload File</span>
+            </button>
+            <button class="btn btn--sm btn--sky" id="selectBtn" type="button" aria-pressed="false">
+              <svg class="icon" aria-hidden="true"><use href="#i-select"/></svg><span>Pilih</span>
+            </button>
+            <button class="btn btn--sm btn--peach" id="deleteBtn" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg><span>Hapus</span>
+            </button>
+          </div>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input id="searchInput" type="search" placeholder="Cari super folder..." autocomplete="off">
+          </label>
+        </div>
+
+        <div class="selection-bar" id="selectionBar" hidden>
+          <span class="selection-bar__count" id="selectionCount">0 dipilih</span>
+          <span class="selection-bar__size" id="selectionSize">0 B</span>
+          <div class="selection-bar__actions">
+            <button class="btn btn--sm btn--mint" id="selectAllBtn" type="button">Pilih semua</button>
+            <button class="btn btn--sm btn--lavender" id="clearSelectionBtn" type="button">Kosongkan</button>
+            <button class="btn btn--sm btn--peach" id="zipBtn" type="button">
+              <svg class="icon" aria-hidden="true"><use href="#i-archive"/></svg><span>Unduh ZIP</span>
+            </button>
+          </div>
+        </div>
+
+        <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+
+        <div class="workspace">
+          <aside class="pane pane--dir">
+            <h2 class="pane__title">Directory</h2>
+            <ul class="dir-list" id="dirList" aria-label="Directory folder"></ul>
+          </aside>
+
+          <section class="pane pane--content">
+            <h2 class="pane__title">Content</h2>
+            <div class="files" id="fileGrid"></div>
+            <p class="empty" id="emptyState" hidden>Folder ini kosong.</p>
+          </section>
+
+          <aside class="pane pane--inspect">
+            <div class="inspector-block">
+              <h2 class="pane__title">Preview</h2>
+              <div class="preview" id="preview">
+                <svg class="icon icon--xl" aria-hidden="true"><use href="#i-file"/></svg>
+                <p class="preview__hint">Pilih file untuk melihat preview</p>
+              </div>
+            </div>
+            <div class="inspector-block">
+              <h2 class="pane__title">File Info</h2>
+              <dl class="info" id="info">
+                <div class="info__row"><dt>Nama</dt><dd>—</dd></div>
+                <div class="info__row"><dt>Jenis</dt><dd>—</dd></div>
+                <div class="info__row"><dt>Ukuran</dt><dd>—</dd></div>
+                <div class="info__row"><dt>Diubah</dt><dd>—</dd></div>
+                <div class="info__row"><dt>Lokasi</dt><dd>—</dd></div>
+              </dl>
+            </div>
+            <div class="inspector-block inspector-block--download">
+              <button class="btn btn--sm btn--mint download-btn" id="downloadBtn" type="button" disabled>
+                <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg><span>Unduh file</span>
+              </button>
+              <p class="download-note" id="downloadNote" hidden></p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CATEGORIZED ================= -->
+    <section class="view" id="view-categorized" hidden>
+      <div class="app">
+        <div class="page-head">
+          <h1 class="page-title">Categorized</h1>
+          <p class="page-sub">Penggunaan storage berdasarkan kategori file.</p>
+        </div>
+
+        <div class="cat-grid" id="catGrid"></div>
+
+        <div class="cat-split" id="catSplit">
+          <section class="cat-panel" id="catPanel" hidden>
+            <div class="cat-panel__head">
+              <h2 class="cat-panel__title" id="catPanelTitle">Doc</h2>
+              <button class="cat-panel__clear" id="catClear" type="button">Tutup</button>
+            </div>
+            <p class="cat-panel__sub" id="catPanelSub">—</p>
+            <ul class="cat-list" id="catList"></ul>
+          </section>
+
+          <div class="chart-wrap" id="chartWrap">
+            <div class="chart" id="donut" role="img" aria-label="Diagram penggunaan storage per kategori">
+              <div class="chart__center">
+                <strong id="usedLabel">—</strong>
+                <span id="chartLabel">terpakai</span>
+                <em id="chartNote"></em>
+              </div>
+            </div>
+            <ul class="legend" id="legend"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= AUTH MODAL ================= -->
+  <div class="modal" id="loginModal" hidden>
+    <div class="modal__box modal__box--auth" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="settings__head">
+        <h3 class="modal__title" id="authTitle"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Akun</h3>
+        <button class="modal__close" id="loginClose" type="button" aria-label="Tutup akun">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+
+      <div class="auth-tabs" role="tablist" aria-label="Masuk atau buat akun">
+        <button class="auth-tab is-active" id="tabLogin" type="button" role="tab" aria-selected="true" aria-controls="panelLogin">Masuk</button>
+        <button class="auth-tab" id="tabRegister" type="button" role="tab" aria-selected="false" aria-controls="panelRegister">Buat Akun</button>
+      </div>
+
+      <section class="auth-panel" id="panelLogin" role="tabpanel" aria-labelledby="tabLogin">
+        <button class="quick-login" id="quickLoginBtn" type="button">
+          <svg class="icon" aria-hidden="true"><use href="#i-star"/></svg>
+          <span>Isi Login Cepat</span>
+          <em>sementara</em>
+        </button>
+        <form id="loginForm" class="login-form">
+          <label class="field">
+            <span>Username</span>
+            <input id="loginUser" name="username" type="text" autocomplete="username" autocapitalize="none" required>
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input id="loginPass" name="password" type="password" autocomplete="current-password" required>
+          </label>
+          <p class="login-error" id="loginError" role="alert" hidden></p>
+          <div class="modal__actions">
+            <button class="btn btn--sm btn--mint" type="submit" id="loginSubmit">Masuk</button>
+            <button class="btn btn--sm btn--lavender" type="button" id="loginCancel">Batal</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="auth-panel" id="panelRegister" role="tabpanel" aria-labelledby="tabRegister" hidden>
+        <form id="registerForm" class="login-form">
+          <label class="field">
+            <span>Username</span>
+            <input id="registerUser" name="username" type="text" autocomplete="username" autocapitalize="none" minlength="3" maxlength="20" required>
+          </label>
+          <p class="field__hint field__hint--tight">3–20 karakter: huruf, angka, titik, garis bawah, atau strip.</p>
+          <label class="field">
+            <span>Password</span>
+            <input id="registerPass" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <label class="field">
+            <span>Ulangi password</span>
+            <input id="registerPass2" name="password2" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <p class="field__hint field__hint--tight">Minimal 8 karakter. Setiap akun mendapat ruang 50 GB terpisah.</p>
+          <p class="slot-line" id="registerSlot">Memeriksa slot akun…</p>
+          <p class="login-error" id="registerError" role="alert" hidden></p>
+          <div class="modal__actions">
+            <button class="btn btn--sm btn--mint" type="submit" id="registerSubmit">Buat Akun</button>
+            <button class="btn btn--sm btn--lavender" type="button" id="registerCancel">Batal</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- ================= FOLDER MODAL ================= -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 class="modal__title" id="modalTitle">Folder Baru</h3>
+      <p class="field__hint" id="folderHint">—</p>
+      <label class="field">
+        <span>Nama folder</span>
+        <input id="folderName" type="text" placeholder="mis. Dokumen" autocomplete="off">
+      </label>
+      <div class="modal__actions">
+        <button class="btn btn--sm btn--mint" id="modalOk" type="button">Buat</button>
+        <button class="btn btn--sm btn--lavender" id="modalCancel" type="button">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= UPLOAD MODAL ================= -->
+  <div class="modal" id="fileModal" hidden>
+    <div class="modal__box modal__box--upload" role="dialog" aria-modal="true" aria-labelledby="fileTitle">
+      <div class="settings__head">
+        <h3 class="modal__title" id="fileTitle"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg> Upload File</h3>
+        <button class="modal__close" id="fileClose" type="button" aria-label="Tutup upload">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+      <p class="field__hint">Pilih file dari perangkat. Isi file benar-benar diunggah ke cloud, bukan sekadar metadata.</p>
+
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Pilih file dari perangkat">
+        <svg class="icon dropzone__icon" aria-hidden="true"><use href="#i-upload"/></svg>
+        <strong>Klik atau tarik file ke sini</strong>
+        <span>Bisa banyak file sekaligus · maks. 2 GB per file</span>
+      </div>
+      <input id="uploadInput" type="file" multiple hidden>
+
+      <ul class="upload-queue" id="uploadQueue" hidden></ul>
+
+      <label class="field">
+        <span>Folder tujuan</span>
+        <select id="uploadFolder"></select>
+      </label>
+      <p class="quota-line" id="uploadQuota">—</p>
+      <p class="login-error" id="uploadError" role="alert" hidden></p>
+      <div class="upload-progress" id="uploadProgress" hidden>
+        <div class="upload-progress__bar"><span id="uploadProgressFill"></span></div>
+        <p class="upload-progress__text" id="uploadProgressText">—</p>
+      </div>
+
+      <div class="modal__actions">
+        <button class="btn btn--sm btn--mint" id="fileOk" type="button">Upload</button>
+        <button class="btn btn--sm btn--lavender" id="fileCancel" type="button">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CONFIRM MODAL ================= -->
+  <div class="modal" id="confirmModal" hidden>
+    <div class="modal__box modal__box--confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+      <h3 class="modal__title" id="confirmTitle">Konfirmasi</h3>
+      <p class="confirm__message" id="confirmMessage">—</p>
+      <div class="modal__actions">
+        <button class="btn btn--sm btn--lavender" id="confirmCancel" type="button">Batal</button>
+        <button class="btn btn--sm btn--peach" id="confirmOk" type="button">Lanjut</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SETTINGS MODAL ================= -->
+  <div class="modal" id="settings" hidden>
+    <div class="modal__box modal__box--settings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="settings__head">
+        <h3 class="modal__title" id="settingsTitle">Pengaturan</h3>
+        <button class="modal__close" id="settingsClose" type="button" aria-label="Tutup pengaturan">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </div>
+
+      <section class="settings__group">
+        <h4 class="settings__label">Tema Warna</h4>
+        <div class="theme-grid" id="themeGrid" role="radiogroup" aria-label="Tema warna"></div>
+      </section>
+
+      <section class="settings__group">
+        <h4 class="settings__label">Tampilan</h4>
+        <div class="switch-row">
+          <span>Mode gelap</span>
+          <button class="switch" id="modeToggle" type="button" role="switch" aria-checked="false" aria-label="Mode gelap">
+            <span class="switch__knob"></span>
+          </button>
+        </div>
+        <div class="switch-row">
+          <span>Kursor pixel</span>
+          <button class="switch" id="cursorToggle" type="button" role="switch" aria-checked="true" aria-label="Kursor pixel">
+            <span class="switch__knob"></span>
+          </button>
+        </div>
+        <div class="switch-row">
+          <span>Animasi &amp; efek</span>
+          <button class="switch" id="motionToggle" type="button" role="switch" aria-checked="true" aria-label="Animasi dan efek">
+            <span class="switch__knob"></span>
+          </button>
+        </div>
+      </section>
+
+      <div class="modal__actions">
+        <button class="btn btn--sm btn--peach" id="settingsReset" type="button">Reset</button>
+        <button class="btn btn--sm btn--mint" id="settingsDone" type="button">Selesai</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <p>© <span id="year">2026</span> Cloud Server</p>
+    <p>Pixel Pastel</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

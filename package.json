@@ -1,0 +1,12 @@
+{
+  "name": "cloud-server-pixel-pastel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Home cloud server — pixel pastel UI + backend minimal tanpa dependency",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

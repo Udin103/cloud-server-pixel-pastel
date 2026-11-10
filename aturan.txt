@@ -1,0 +1,2 @@
+aturan:
+coba kembalikan ke versi yang interaktif tanpa animasi hover baca jurnal perubahan sebagai referensi, versi terseut sudah ada animasi interaktif tapi versi tersebut sebelu bg di ubah kotak kota,bahkan sebelum pointer kursor berefek pada background tapi sudah interaktif partikelnya gerak ketika kursor di gerakan

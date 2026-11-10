@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="320" height="320" role="img" aria-label="Pixel robot avatar">
+  <rect x="6" y="6" width="20" height="12" fill="#B8A9FF"/>
+  <rect x="6" y="9" width="2" height="4" fill="#B8A9FF"/>
+  <rect x="24" y="9" width="2" height="4" fill="#B8A9FF"/>
+  <rect x="9" y="8" width="4" height="4" fill="#FAF6FF"/>
+  <rect x="19" y="8" width="4" height="4" fill="#FAF6FF"/>
+  <rect x="12" y="13" width="8" height="2" fill="#2D2A32"/>
+  <rect x="24" y="4" width="2" height="2" fill="#FFD3B8"/>
+  <rect x="24" y="6" width="2" height="3" fill="#2D2A32"/>
+</svg>

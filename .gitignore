@@ -1,0 +1,16 @@
+# Data akun lokal (hash password + file pengguna) — jangan di-commit
+data/
+
+# Dependency (server.js memakai modul bawaan Node, tapi tetap aman)
+node_modules/
+
+# Log & cache
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.cache/
+
+# Editor
+.vscode/
+.idea/
